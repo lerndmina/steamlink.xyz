@@ -108,7 +108,9 @@ options.sort((a, b) => a.label.localeCompare(b.label));
 
 	basicForm.addEventListener('submit', function(event) {
 		event.preventDefault();
+		// @ts-ignore
 		const linkType = basicForm.linkType.value;
+		// @ts-ignore
 		const linkInput = basicForm.linkInput.value.trim();
 		if (!linkType || !linkInput) {
 			setResult(result, 'Please select a link type and enter the required information', true);
@@ -128,6 +130,7 @@ options.sort((a, b) => a.label.localeCompare(b.label));
 	}
 	advancedForm.addEventListener('submit', function(event) {
 		event.preventDefault();
+		// @ts-ignore
 		const steamLink = advancedForm.steamLink.value.trim();
 		if (!steamLink) {
 			setResult(result, 'Please enter a steam:// link', true);
@@ -261,6 +264,7 @@ options.sort((a, b) => a.label.localeCompare(b.label));
 							break;
 			}
 
+			// @ts-ignore
 			linkInput.placeholder = placeholderText;
 	});
 </script>
