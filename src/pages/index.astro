@@ -1,3 +1,9 @@
+---
+
+const postRoute = "/api/v1/generate-url"
+---
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,13 +11,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Steam Link Converter</title>
     <link href="styles.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-900 text-gray-300 flex flex-col items-center">
     <div class="container mx-auto mt-24 text-center bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-3xl font-bold text-blue-400 mb-6">Steam Link Converter</h1>
         <p class="text-lg text-gray-400 mb-8">Convert your steam:// links into clickable links that will open directly in Steam.</p>
-        <form action="#" method="post" class="space-y-6">
+        <form action={postRoute} method="post" class="space-y-6">
             <input type="text" id="steamLink" name="steamLink" placeholder="Enter your steam:// link" required 
                    class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-400 focus:outline-none">
             <input type="submit" value="Convert" 
@@ -39,5 +44,8 @@
             <a href="https://developer.valvesoftware.com/wiki/Steam_browser_protocol" target="_blank" class="text-blue-400 hover:underline">Steam Browser Protocol documentation</a>.
         </p>
     </div>
+		<footer class="mt-12 text-center text-gray-500">
+			<p>Made with love by <a href="https://imadam.io" target="_blank" class="text-blue-400 hover:underline">imadam.io</a></p>
+	</footer>
 </body>
 </html>
