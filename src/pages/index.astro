@@ -1,19 +1,53 @@
 ---
 import Layout from "../layouts/Layout.astro"
+
+const heading = "Steam Link Generator"
+const subheading = "Create shareable links that instantly open Steam with just a click. No more manual copy-pasting in the browser!"
 ---
 
 
-<Layout title="Steam Link Converter">
+<Layout title={heading}>
     <div class="container mx-auto mt-24 text-center bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-md">
-        <h1 class="text-3xl font-bold text-blue-400 mb-6">Steam Link Converter</h1>
-        <p class="text-lg text-gray-400 mb-8">Convert your steam:// links into clickable links that will open directly in Steam.</p>
-        <form action="#" method="post" class="space-y-6">
-            <input type="text" id="steamLink" name="steamLink" placeholder="Enter your steam:// link" required 
-                   class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-400 focus:outline-none">
-            <input type="submit" value="Convert" 
-                   class="w-full p-3 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
-        </form>
-        <div id="result" class="hidden mt-6 p-3 bg-gray-700 rounded"></div>
+        <h1 class="text-3xl font-bold text-blue-400 mb-6">{heading}</h1>
+        <p class="text-lg text-gray-400 mb-8">{subheading}</p>
+        <!-- Toggle Button -->
+        <button id="toggleButton" class="mb-6 px-4 py-2 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+					Switch to Advanced Form
+			</button>
+			
+			<!-- Original Form -->
+			<form id="newForm" action="#" method="post" class="space-y-6 hidden">
+					<input type="text" id="steamLink" name="steamLink" placeholder="Enter your steam:// link" required 
+								 class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-400 focus:outline-none">
+					<input type="submit" value="Convert" 
+								 class="w-full p-3 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+			</form>
+
+			<!-- New Form -->
+			<form id="originalForm" action="#" method="post" class="space-y-6">
+					<!-- Dropdown for link type -->
+					<div class="relative mb-6">
+							<select id="linkType" name="linkType" class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-gray-300 focus:border-blue-400 focus:outline-none">
+									<option value="" disabled selected>Select link type</option>
+									<option value="connect">Connect (Connect to a Game)</option>
+									<option value="add">Add (Add a Friend)</option>
+									<option value="install">Install (Game ID)</option>
+							</select>
+					</div>
+
+					<!-- Dynamic input field -->
+					<div id="secondaryForm" class="space-y-6">
+							<input type="text" id="linkInput" name="linkInput" placeholder="Enter your link info" required 
+										 class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-gray-300 focus:border-blue-400 focus:outline-none">
+					</div>
+
+					<!-- Convert Button -->
+					<input type="submit" value="Convert" class="w-full p-3 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+			</form>
+
+			<div id="result" class="hidden mt-6 p-3 bg-gray-700 rounded"></div>
+	</div>
+
     </div>
 
     <div class="info-section mt-12 bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-3xl text-left">
@@ -40,8 +74,9 @@ import Layout from "../layouts/Layout.astro"
 	</footer>
 </Layout>
 
+
+<!-- Form submission and link validation -->
 <script>
-	// Intercept the form submission and convert the steam:// link
 	const currentDomain = window.location.hostname;
 	const form = document.querySelector('form');
 	const result = document.getElementById('result');
@@ -72,4 +107,47 @@ import Layout from "../layouts/Layout.astro"
 		result.classList.toggle('bg-red-500', isError);
 		result.classList.toggle('bg-green-500', !isError);
 	}
+</script>
+
+<!-- JavaScript for form switching and dynamic updates -->
+<script>
+	document.getElementById('toggleButton')!.addEventListener('click', function() {
+			const originalForm = document.getElementById('originalForm')!;
+			const newForm = document.getElementById('newForm')!;
+			const button = this;
+
+			if (originalForm.classList.contains('hidden')) {
+					originalForm.classList.remove('hidden');
+					newForm.classList.add('hidden');
+					button.textContent = 'Switch to Advanced Form';
+			} else {
+					originalForm.classList.add('hidden');
+					newForm.classList.remove('hidden');
+					button.textContent = 'Switch to Basic Form';
+			}
+	});
+
+	document.getElementById('linkType')!.addEventListener('change', function() {
+		// @ts-ignore
+			const linkType = this.value;
+			const linkInput = document.getElementById('linkInput');
+			let placeholderText = '';
+
+			switch (linkType) {
+					case 'connect':
+							placeholderText = 'Enter game ID';
+							break;
+					case 'add':
+							placeholderText = 'Enter Steam ID';
+							break;
+					case 'install':
+							placeholderText = 'Enter game ID';
+							break;
+					default:
+							placeholderText = 'Enter your link info';
+							break;
+			}
+
+			linkInput.placeholder = placeholderText;
+	});
 </script>
