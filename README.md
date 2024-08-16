@@ -1,54 +1,101 @@
-# Astro Starter Kit: Basics
+# Steam Link Converter
 
-```sh
-npm create astro@latest -- --template basics
+Welcome to the Steam Link Converter! This project allows you to generate shareable Steam links that instantly open Steam with just a click. It utilizes Astro for the static site generation, Tailwind CSS for styling, and Bun for package management and build tasks.
+
+## Table of Contents
+
+- [Steam Link Converter](#steam-link-converter)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Steps](#steps)
+  - [Usage](#usage)
+    - [Development](#development)
+    - [Build](#build)
+    - [Preview](#preview)
+  - [Deployment](#deployment)
+  - [Contributing](#contributing)
+  - [License](#license)
+
+## Installation
+
+To get started with this project, you'll need to set up your environment and install the necessary dependencies.
+
+### Prerequisites
+
+- [Bun](https://bun.sh/) (for package management and building)
+
+### Steps
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/lerndmina/steamlink.xyz
+   cd steamlink.xyz
+   ```
+
+2. **Install Dependencies**
+
+   Use Bun to install the project dependencies:
+
+   ```bash
+   bun install
+   ```
+
+
+## Usage
+
+Once you have the project set up, you can run it locally to see the site in action.
+
+### Development
+
+To start a local development server:
+
+```bash
+bun run dev
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+This will start the development server and open the site in your default web browser. The server supports hot-reloading, so changes to your files will be reflected in real-time.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Build
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+To build the project for production:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+bun run build
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+This command generates static files optimized for production and places them in the `dist` directory.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Preview
 
-Any static assets, like images, can be placed in the `public/` directory.
+To preview the production build locally:
 
-## 🧞 Commands
+```bash
+bun run preview
+```
 
-All commands are run from the root of the project, from a terminal:
+This will serve the static files from the `dist` directory, allowing you to see how your site will look in production.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Deployment
 
-## 👀 Want to learn more?
+This project is set up to be deployed to Cloudflare Pages. You can deploy it to other platforms as well, but you may need to adjust the configuration files accordingly.
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## Contributing
+
+Contributions are welcome! If you have suggestions or improvements, please follow these steps:
+
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -am 'Add new feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Create a new Pull Request.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+Feel free to customize this README further to better fit your project specifics and needs!
