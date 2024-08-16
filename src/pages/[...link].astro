@@ -64,6 +64,7 @@ options.sort((a, b) => a.label.localeCompare(b.label));
 			</form>
 
 			<div id="result" class="mt-6 p-3 bg-gray-700 rounded hidden"></div>
+			<div id="copyResult" class="mt-6 p-3 bg-gray-700 rounded hidden"></div>
 	</div>
 
     </div>
@@ -159,12 +160,26 @@ options.sort((a, b) => a.label.localeCompare(b.label));
 			result.textContent = '';
 			result.appendChild(link);
 
+			const copyResult = document.getElementById('copyResult')!;
+
 			// Copy the result to the clipboard
 			navigator.clipboard.writeText(text).then(() => {
 				console.debug('Copied to clipboard:', text);
+				// Notify the user that the link has been copied
+				copyResult.textContent = 'Copied to clipboard!';
+				copyResult.classList.remove('hidden');
+
 			}).catch((error) => {
 				console.error('Failed to copy:', error);
+				copyResult.textContent = 'Failed to copy to clipboard';
+				copyResult.classList.remove('hidden');
 			});
+
+			// Remove copy notification after 15 seconds
+			setTimeout(() => {
+				copyResult.textContent = '';
+				copyResult.classList.add('hidden');
+			}, 15000);
 		} else {
 			result.classList.remove(successStyle);
 			result.classList.add(errorStyle);
