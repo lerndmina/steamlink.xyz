@@ -1,0 +1,274 @@
+---
+import Layout from "../layouts/Layout.astro"
+
+const heading = "Steam Link Generator"
+const subheading = "Create shareable links that instantly open Steam with just a click. No more manual copy-pasting in the browser!"
+
+enum ID_TYPES {
+	game = "GAME_ID",
+	user = "STEAM_ID",
+}
+
+const options = [
+	{ value: "connect", label: "Connect (Connect to a Game)", idType: ID_TYPES.game },
+	{ value: "add", label: "Add (Add a Friend)", idType: ID_TYPES.user },
+	{ value: "install", label: "Install (Install a Game)", idType: ID_TYPES.game },
+	{value: "rungameid", label: "Launch (Launch a Game)", idType: ID_TYPES.game},
+]
+
+options.sort((a, b) => a.label.localeCompare(b.label));
+---
+
+
+<Layout title={heading}>
+    <div class="container mx-auto mt-24 text-center bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-md">
+        <h1 class="text-3xl font-bold text-blue-400 mb-6">{heading}</h1>
+        <p class="text-lg text-gray-400 mb-4">{subheading}</p>
+				<p class="mb-8">This site is an <a href="https://github.com/lerndmina/steamlink.xyz" target="_blank" class="text-blue-400 hover:underline">open-source project</a> that allows you to convert any <strong class="text-white">steam://</strong> link into a shareable link.</p>
+        <!-- Toggle Button -->
+        <button id="toggleButton" class="mb-6 px-4 py-2 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+					Switch to Advanced Form
+			</button>
+			
+			<!-- Advanced Form -->
+			<form id="advancedForm" action="#" method="post" class="space-y-6 hidden">
+				<p>Manually enter your <strong class="text-white">steam://</strong> link below to convert it into a shareable link.</p>
+					<input type="text" id="steamLink" name="steamLink" placeholder="Enter your steam:// link" required 
+								 class="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:border-blue-400 focus:outline-none">
+					<input type="submit" value="Convert" 
+								 class="w-full p-3 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+			</form>
+
+			<!-- Basic Form -->
+			<form id="basicForm" action="#" method="post" class="space-y-6">
+				<p>Select the type of link you want to create and enter the required information below.</p>
+					<!-- Dropdown for link type -->
+					<div class="relative mb-6">
+							<select id="linkType" name="linkType" class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-gray-300 focus:border-blue-400 focus:outline-none">
+									<option value="" disabled selected>Select Link Type</option>
+									<!-- Loop through options and create option elements using astro -->
+									 { options.map(option => (
+										 <option value={option.value}>{option.label}</option>
+									 ))}
+							</select>
+					</div>
+
+					<!-- Dynamic input field -->
+					<div id="secondaryForm" class="space-y-6">
+							<input type="text" id="linkInput" name="linkInput" placeholder="Enter your link info" required 
+										 class="w-full p-3 rounded bg-gray-700 border border-gray-600 text-gray-300 focus:border-blue-400 focus:outline-none">
+					</div>
+
+					<!-- Convert Button -->
+					<input type="submit" value="Convert" class="w-full p-3 bg-blue-500 text-white font-bold rounded cursor-pointer hover:bg-blue-600">
+			</form>
+
+			<div id="result" class="mt-6 p-3 bg-gray-700 rounded hidden"></div>
+	</div>
+
+    </div>
+
+    <div class="info-section mt-12 bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-3xl text-left">
+        <h2 class="text-2xl font-bold text-blue-400 mb-6">What is a steam:// Link?</h2>
+        <p class="text-lg text-gray-400 mb-4">
+            A <strong class="text-white">steam://</strong> link is a special type of URL that interacts directly with the Steam client.
+            These links can be used to open the Steam client, install or launch a game, join a server, or visit a community page, among other things.
+        </p>
+        <p class="text-lg text-gray-400 mb-4">
+            For example, a link like <code class="bg-gray-700 p-1 rounded text-white">steam://install/570</code> will prompt the Steam client to install Dota 2, and
+            <code class="bg-gray-700 p-1 rounded text-white">steam://run/570</code> will launch the game if it's installed.
+        </p>
+        <p class="text-lg text-gray-400 mb-4">
+            My site helps by taking any valid <strong class="text-white">steam://</strong> link and converting it into a clickable link that you can easily share with others.
+            This can be particularly useful for content creators, game developers, or community managers who want to create direct links to their games, servers, or community pages.
+        </p>
+        <p class="text-lg text-gray-400">
+            Learn more about Steam's deep linking capabilities in the 
+            <a href="https://developer.valvesoftware.com/wiki/Steam_browser_protocol" target="_blank" class="text-blue-400 hover:underline">Steam Browser Protocol documentation</a>.
+        </p>
+    </div>
+		<footer class="mt-12 text-center text-gray-500">
+			<p>Made with love by <a href="https://imadam.io" target="_blank" class="text-blue-400 hover:underline">imadam.io</a></p>
+	</footer>
+</Layout>
+
+
+<!-- Basic Form submission and link validation -->
+
+<!-- Form submission and link validation -->
+<script>
+	const currentDomain = window.location.hostname;
+	const result = document.getElementById('result');
+	// Basic Form
+	const basicForm = document.getElementById('basicForm')!;
+	if (!basicForm || !result) {
+		throw new Error('Form or result element not found');
+	}
+
+	basicForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		const linkType = basicForm.linkType.value;
+		const linkInput = basicForm.linkInput.value.trim();
+		if (!linkType || !linkInput) {
+			setResult(result, 'Please select a link type and enter the required information', true);
+			return;
+		}
+
+		const steamLink = `steam://${linkType}/${linkInput}`;
+		setResult(result, steamLink);
+	});
+	
+
+	// Advanced Form
+	
+	const advancedForm = document.getElementById('advancedForm');
+	if (!advancedForm || !result || !basicForm) {
+		throw new Error('Form or result element not found');
+	}
+	advancedForm.addEventListener('submit', function(event) {
+		event.preventDefault();
+		const steamLink = advancedForm.steamLink.value.trim();
+		if (!steamLink) {
+			setResult(result, 'Please enter a steam:// link', true);
+			return;
+		}
+
+		const steamRegex = /^steam:\/\/[a-zA-Z0-9\/\-\_]+$/;
+		if (!steamRegex.test(steamLink)) {
+			setResult(result, 'Invalid steam:// link format', true);
+			return;
+		}
+		setResult(result, steamLink);
+	});
+
+	const errorStyle = 'bg-red-900';
+	const successStyle = 'bg-green-900';
+
+	function setResult(result: HTMLElement, text: string, isError: boolean = false) {
+		text = text.replace(/steam:\/\/(?!\s)/g, `https://${currentDomain}/`);
+		console.debug('Setting result:', text);
+		
+		if (!isError) {
+			result.classList.remove(errorStyle);
+			result.classList.add(successStyle);
+			const link = document.createElement('a');
+			link.href = text;
+			link.textContent = text;
+			link.target = '_blank';
+
+			result.textContent = '';
+			result.appendChild(link);
+
+			// Copy the result to the clipboard
+			navigator.clipboard.writeText(text).then(() => {
+				console.debug('Copied to clipboard:', text);
+			}).catch((error) => {
+				console.error('Failed to copy:', error);
+			});
+		} else {
+			result.classList.remove(successStyle);
+			result.classList.add(errorStyle);
+			result.textContent = text;
+		}
+
+		result.classList.remove('hidden');
+	}
+
+	function hideResult(result: HTMLElement) {
+		result.textContent = '';
+		result.classList.add('hidden');
+	}
+
+	document.getElementById('steamLink')!.addEventListener('input', function() {
+		const result = document.getElementById('result')!;
+		if (!result.classList.contains('hidden') && result.classList.contains(errorStyle)) {
+			hideResult(result);
+		}
+	});
+</script>
+
+<!-- Copy Result button -->
+<script>
+	document.getElementById('copyResult')!.addEventListener('click', function() {
+		const result = document.getElementById('result')!;
+		const text = result.textContent;
+		if (!text) {
+			return;
+		}
+
+		navigator.clipboard.writeText(text).then(() => {
+			alert('Copied to clipboard!');
+		}).catch((error) => {
+			console.error('Failed to copy:', error);
+		});
+	});
+</script>
+
+<!-- JavaScript for form switching and dynamic updates -->
+<script>
+	document.getElementById('toggleButton')!.addEventListener('click', function() {
+			const basicForm = document.getElementById('basicForm')!;
+			const advancedForm = document.getElementById('advancedForm')!;
+			const button = this;
+
+			if (basicForm.classList.contains('hidden')) {
+					basicForm.classList.remove('hidden');
+					advancedForm.classList.add('hidden');
+					button.textContent = 'Switch to Advanced Form';
+			} else {
+					basicForm.classList.add('hidden');
+					advancedForm.classList.remove('hidden');
+					button.textContent = 'Switch to Basic Form';
+			}
+	});
+
+	document.getElementById('linkType')!.addEventListener('change', function() {
+		// @ts-ignore
+			const linkType = this.value;
+			const linkInput = document.getElementById('linkInput');
+			let placeholderText = '';
+
+			switch (linkType) {
+					case 'connect':
+							placeholderText = 'Enter game ID';
+							break;
+					case 'add':
+							placeholderText = 'Enter Steam ID';
+							break;
+					case 'install':
+							placeholderText = 'Enter game ID';
+							break;
+					case 'rungameid':
+							placeholderText = 'Enter game ID';
+							break;
+					default:
+							placeholderText = 'Enter your link info';
+							break;
+			}
+
+			linkInput.placeholder = placeholderText;
+	});
+</script>
+
+
+<!-- Perform actions on page load -->
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		// Determine if the user is on the homepage or not
+		const isHomepage = window.location.pathname === '/';
+		if (!isHomepage) {
+			// Get the steam path from the URL
+			const steamPath = window.location.pathname.replace('/', '');
+			const steamLink = `steam://${steamPath}`;
+			window.location.href = steamLink;
+		}
+
+
+			const linkType = document.getElementById('linkType') as HTMLSelectElement;
+			linkType.value = linkType.options[0].value;
+
+			// Set the placeholder text for the input field
+			const linkInput = document.getElementById('linkInput') as HTMLInputElement;
+			linkInput.placeholder = 'Enter your link info';
+	});
+</script>
