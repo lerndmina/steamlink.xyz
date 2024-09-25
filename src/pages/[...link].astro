@@ -27,6 +27,15 @@ let formDivClasses = bothDivClasses;
 let redirectingDivClasses = `${bothDivClasses} pt-20`;
 if (link) formDivClasses += " hidden";
 if (!link) redirectingDivClasses += " hidden";
+
+if (link === "robots.txt"){
+  return new Response("User-agent: *\nDisallow: /", {
+    headers: {
+      "content-type": "text/plain",
+    },
+  });
+}
+
 ---
 
 <Layout title={heading}>
@@ -95,18 +104,22 @@ if (!link) redirectingDivClasses += " hidden";
 </Layout>
 
 <div class="info-section mt-12 bg-gray-800 p-10 rounded-lg shadow-lg w-full max-w-3xl text-left">
-  <h2 class="text-2xl font-bold text-blue-400 mb-6">What is a steam:// Link?</h2>
+  <h2 class="text-2xl font-bold text-blue-400 mb-4">What is a steam:// URL?</h2>
   <p class="text-lg text-gray-400 mb-4">
-    A <strong class="text-white">steam://</strong> link is a special type of URL that interacts directly with the Steam client. These links can be used to open the Steam client, install or launch a game,
-    join a server, or visit a community page, among other things.
+    A <strong class="text-white">steam://</strong> link is a URL that directly opens content in the <a target="_blank" href="https://store.steampowered.com/about/">Steam client</a>. These links can be used to open the Steam client, install or launch a game, join a server, or visit a community page, among other things.
   </p>
   <p class="text-lg text-gray-400 mb-4">
-    For example, a link like <code class="bg-gray-700 p-1 rounded text-white">steam://install/570</code> will prompt the Steam client to install Dota 2, and
-    <code class="bg-gray-700 p-1 rounded text-white">steam://run/570</code> will launch the game if it's installed.
+    However, these links often don't work in chat applications or other platforms outside of Steam. This can lead to frustration for users who want to share direct links to Steam games with friends.
   </p>
   <p class="text-lg text-gray-400 mb-4">
-    My site helps by taking any valid <strong class="text-white">steam://</strong> link and converting it into a clickable link that you can easily share with others. This can be particularly useful for
-    content creators, game developers, or community managers who want to create direct links to their games, servers, or community pages.
+    For example, a link like <code class="bg-gray-700 p-1 rounded text-white"><a href="steam://install/570">steam://install/570</a></code> will prompt the Steam client to install Dota 2, and
+    <code class="bg-gray-700 p-1 rounded text-white"><a href="steam://run/570">steam://run/570</a></code> will launch the game if it's installed.
+  </p>
+
+  <h2 class="text-2xl font-bold text-blue-400 pt-12 mb-4">Our solution:</h2>
+
+  <p class="text-lg text-gray-400 mb-4">
+    We make sharing Steam links easy by taking any valid <strong class="text-white">steam://</strong> link and converting it into a clickable link that you can easily share with others. This can be particularly useful for content creators, game developers, or community managers who want to create direct links to their games, servers, or community pages.
   </p>
   <p class="text-lg text-gray-400">
     Learn more about Steam's deep linking capabilities in the

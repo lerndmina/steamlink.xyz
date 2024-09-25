@@ -19,10 +19,16 @@ const { title } = Astro.props;
     <meta property="og:site_name" content="Steam Link Generator" />
     <meta property="og:locale" content="en_US" />
     <title>{title}</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
 
 </head>
 	<body class="bg-gray-900 text-gray-300 flex flex-col items-center">
+        <!-- Logo in the top left anchored  -->
+        <a href="/" class="absolute top-0 left-0 p-4">
+            <img src="/steamlinkgen-logo-64.png" alt="Steam Link Generator" class="w-12 h-12" title="Steam Link Generator Logo (Generated with Gemini)" />
+        </a>
+         
 		<slot />
         <script is:inline src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 	</body>
@@ -30,6 +36,11 @@ const { title } = Astro.props;
 <style is:global>
 code {
     font-size: 0.875rem; /* This is equivalent to 14px */
+}
+
+a { 
+    @apply text-blue-400;
+    text-decoration: underline;
 }
 
 </style>
