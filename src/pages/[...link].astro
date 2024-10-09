@@ -29,7 +29,7 @@ if (link) formDivClasses += " hidden";
 if (!link) redirectingDivClasses += " hidden";
 
 if (link === "robots.txt"){
-  return new Response("User-agent: *\nDisallow: /", {
+  return new Response("User-agent: *\nAllow: /", {
     headers: {
       "content-type": "text/plain",
     },
